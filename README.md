@@ -1,6 +1,6 @@
 # @dontirun/state-machine-semaphore
 
-[![npm version](https://img.shields.io/npm/v/donti/state-machine-semaphore.svg)](https://www.npmjs.com/package/@donti%2Fstate-machine-semaphore) 
+[![npm version](https://img.shields.io/npm/v/@dontirun/state-machine-semaphore.svg)](https://img.shields.io/npm/v/@dontirun/state-machine-semaphore) 
 [![PyPI version](https://img.shields.io/pypi/v/state-machine-semaphore.svg)](https://pypi.org/project/state-machine-semaphore)
 [![NuGet version](https://img.shields.io/nuget/v/Dontirun.StateMachineSemaphore)](https://www.nuget.org/packages/Dontirun.StateMachineSemaphore)
 
