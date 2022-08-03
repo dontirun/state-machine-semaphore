@@ -14,10 +14,10 @@ This construct is based off of [Justin Callison's](https://github.com/JustinCall
 
 ### Example 1) A state machine with a controlled job
 
-<table border-collapse="collapse">
+<table>
 <tr>
-<th</th>
-<th></th>
+<th>Code</th>
+<th>Definition</th>
 </tr>
 <tr>
 <td>
@@ -63,10 +63,10 @@ export class CdkTestStack extends Stack {
 
 ### Example 2) A state machine with multiple semaphores
 
-<table border-collapse="collapse">
+<table>
 <tr>
-<th></th>
-<th></th>
+<th>Code</th>
+<th>Definition</th>
 </tr>
 <tr>
 <td>
