@@ -17,7 +17,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
     '',
     '*By submitting this pull request, I confirm that my contribution is made under the terms of the Apache-2.0 license*',
   ],
-
   publishToPypi: {
     distName: 'state-machine-semaphore',
     module: 'state_machine_semaphore',

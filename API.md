@@ -2,43 +2,41 @@
 
 ## Constructs <a name="Constructs" id="Constructs"></a>
 
-### SemaphoreGenerator <a name="SemaphoreGenerator" id="@dontirun/state-machine-semaphore.SemaphoreGenerator"></a>
+### Semaphore <a name="Semaphore" id="@dontirun/state-machine-semaphore.Semaphore"></a>
 
-Sets up up the DynamoDB table that stores the State Machine semaphores.
+Generates a semaphore for a StepFunction job (or chained set of jobs) to limit parallelism across executions.
 
-Call `generateSemaphoredJob` to generate semaphored jobs.
-
-#### Initializers <a name="Initializers" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.Initializer"></a>
+#### Initializers <a name="Initializers" id="@dontirun/state-machine-semaphore.Semaphore.Initializer"></a>
 
 ```typescript
-import { SemaphoreGenerator } from '@dontirun/state-machine-semaphore'
+import { Semaphore } from '@dontirun/state-machine-semaphore'
 
-new SemaphoreGenerator(scope: Construct, id: string, props?: SemaphoreGeneratorProps)
+new Semaphore(scope: Construct, id: string, props: SemaphoreProps)
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreGenerator.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
-| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreGenerator.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreGenerator.Initializer.parameter.props">props</a></code> | <code><a href="#@dontirun/state-machine-semaphore.SemaphoreGeneratorProps">SemaphoreGeneratorProps</a></code> | *No description.* |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.Initializer.parameter.props">props</a></code> | <code><a href="#@dontirun/state-machine-semaphore.SemaphoreProps">SemaphoreProps</a></code> | *No description.* |
 
 ---
 
-##### `scope`<sup>Required</sup> <a name="scope" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.Initializer.parameter.scope"></a>
+##### `scope`<sup>Required</sup> <a name="scope" id="@dontirun/state-machine-semaphore.Semaphore.Initializer.parameter.scope"></a>
 
 - *Type:* constructs.Construct
 
 ---
 
-##### `id`<sup>Required</sup> <a name="id" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.Initializer.parameter.id"></a>
+##### `id`<sup>Required</sup> <a name="id" id="@dontirun/state-machine-semaphore.Semaphore.Initializer.parameter.id"></a>
 
 - *Type:* string
 
 ---
 
-##### `props`<sup>Optional</sup> <a name="props" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.Initializer.parameter.props"></a>
+##### `props`<sup>Required</sup> <a name="props" id="@dontirun/state-machine-semaphore.Semaphore.Initializer.parameter.props"></a>
 
-- *Type:* <a href="#@dontirun/state-machine-semaphore.SemaphoreGeneratorProps">SemaphoreGeneratorProps</a>
+- *Type:* <a href="#@dontirun/state-machine-semaphore.SemaphoreProps">SemaphoreProps</a>
 
 ---
 
@@ -46,12 +44,14 @@ new SemaphoreGenerator(scope: Construct, id: string, props?: SemaphoreGeneratorP
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreGenerator.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreGenerator.generateSemaphoredJob">generateSemaphoredJob</a></code> | Generates a semaphore for a StepFunction job (or chained set of jobs) to limit parallelism across executions. |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.next">next</a></code> | Continue normal execution with the given state. |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.prefixStates">prefixStates</a></code> | Prefix the IDs of all states in this state machine fragment. |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.toSingleState">toSingleState</a></code> | Wrap all states in this state machine fragment up into a single state. |
 
 ---
 
-##### `toString` <a name="toString" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.toString"></a>
+##### `toString` <a name="toString" id="@dontirun/state-machine-semaphore.Semaphore.toString"></a>
 
 ```typescript
 public toString(): string
@@ -59,63 +59,60 @@ public toString(): string
 
 Returns a string representation of this construct.
 
-##### `generateSemaphoredJob` <a name="generateSemaphoredJob" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.generateSemaphoredJob"></a>
+##### `next` <a name="next" id="@dontirun/state-machine-semaphore.Semaphore.next"></a>
 
 ```typescript
-public generateSemaphoredJob(lockName: string, limit: number, job: IChainNextable, nextState: State, reuseLock?: boolean, comments?: boolean): StateMachineFragment
+public next(next: IChainable): Chain
 ```
 
-Generates a semaphore for a StepFunction job (or chained set of jobs) to limit parallelism across executions.
+Continue normal execution with the given state.
 
-###### `lockName`<sup>Required</sup> <a name="lockName" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.generateSemaphoredJob.parameter.lockName"></a>
+###### `next`<sup>Required</sup> <a name="next" id="@dontirun/state-machine-semaphore.Semaphore.next.parameter.next"></a>
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.IChainable
+
+---
+
+##### `prefixStates` <a name="prefixStates" id="@dontirun/state-machine-semaphore.Semaphore.prefixStates"></a>
+
+```typescript
+public prefixStates(prefix?: string): StateMachineFragment
+```
+
+Prefix the IDs of all states in this state machine fragment.
+
+Use this to avoid multiple copies of the state machine all having the
+same state IDs.
+
+###### `prefix`<sup>Optional</sup> <a name="prefix" id="@dontirun/state-machine-semaphore.Semaphore.prefixStates.parameter.prefix"></a>
 
 - *Type:* string
 
-The name of the semaphore.
+The prefix to add.
+
+Will use construct ID by default.
 
 ---
 
-###### `limit`<sup>Required</sup> <a name="limit" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.generateSemaphoredJob.parameter.limit"></a>
+##### `toSingleState` <a name="toSingleState" id="@dontirun/state-machine-semaphore.Semaphore.toSingleState"></a>
 
-- *Type:* number
+```typescript
+public toSingleState(options?: SingleStateOptions): Parallel
+```
 
-The maximum number of concurrent executions for the given lock.
+Wrap all states in this state machine fragment up into a single state.
 
----
+This can be used to add retry or error handling onto this state
+machine fragment.
 
-###### `job`<sup>Required</sup> <a name="job" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.generateSemaphoredJob.parameter.job"></a>
+Be aware that this changes the result of the inner state machine
+to be an array with the result of the state machine in it. Adjust
+your paths accordingly. For example, change 'outputPath' to
+'$[0]'.
 
-- *Type:* <a href="#@dontirun/state-machine-semaphore.IChainNextable">IChainNextable</a>
+###### `options`<sup>Optional</sup> <a name="options" id="@dontirun/state-machine-semaphore.Semaphore.toSingleState.parameter.options"></a>
 
-The job (or chained jobs) to be semaphored.
-
----
-
-###### `nextState`<sup>Required</sup> <a name="nextState" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.generateSemaphoredJob.parameter.nextState"></a>
-
-- *Type:* aws-cdk-lib.aws_stepfunctions.State
-
-The State to go to after the semaphored job completes.
-
----
-
-###### `reuseLock`<sup>Optional</sup> <a name="reuseLock" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.generateSemaphoredJob.parameter.reuseLock"></a>
-
-- *Type:* boolean
-
-Explicility allow the reuse of a named lock from a previously generated job.
-
-Throws an error if a different `limit` is specified. Default: false.
-
----
-
-###### `comments`<sup>Optional</sup> <a name="comments" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.generateSemaphoredJob.parameter.comments"></a>
-
-- *Type:* boolean
-
-Adds detailed comments to lock related states.
-
-Significantly increases CloudFormation template size. Default: false.
+- *Type:* aws-cdk-lib.aws_stepfunctions.SingleStateOptions
 
 ---
 
@@ -123,21 +120,21 @@ Significantly increases CloudFormation template size. Default: false.
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreGenerator.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 
 ---
 
-##### ~~`isConstruct`~~ <a name="isConstruct" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.isConstruct"></a>
+##### ~~`isConstruct`~~ <a name="isConstruct" id="@dontirun/state-machine-semaphore.Semaphore.isConstruct"></a>
 
 ```typescript
-import { SemaphoreGenerator } from '@dontirun/state-machine-semaphore'
+import { Semaphore } from '@dontirun/state-machine-semaphore'
 
-SemaphoreGenerator.isConstruct(x: any)
+Semaphore.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
 
-###### `x`<sup>Required</sup> <a name="x" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.isConstruct.parameter.x"></a>
+###### `x`<sup>Required</sup> <a name="x" id="@dontirun/state-machine-semaphore.Semaphore.isConstruct.parameter.x"></a>
 
 - *Type:* any
 
@@ -149,11 +146,14 @@ Any object.
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreGenerator.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.property.endStates">endStates</a></code> | <code>aws-cdk-lib.aws_stepfunctions.INextable[]</code> | The states to chain onto if this fragment is used. |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.property.id">id</a></code> | <code>string</code> | Descriptive identifier for this chainable. |
+| <code><a href="#@dontirun/state-machine-semaphore.Semaphore.property.startState">startState</a></code> | <code>aws-cdk-lib.aws_stepfunctions.State</code> | The start state of this state machine fragment. |
 
 ---
 
-##### `node`<sup>Required</sup> <a name="node" id="@dontirun/state-machine-semaphore.SemaphoreGenerator.property.node"></a>
+##### `node`<sup>Required</sup> <a name="node" id="@dontirun/state-machine-semaphore.Semaphore.property.node"></a>
 
 ```typescript
 public readonly node: Node;
@@ -165,30 +165,148 @@ The tree node.
 
 ---
 
+##### `endStates`<sup>Required</sup> <a name="endStates" id="@dontirun/state-machine-semaphore.Semaphore.property.endStates"></a>
+
+```typescript
+public readonly endStates: INextable[];
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.INextable[]
+
+The states to chain onto if this fragment is used.
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="@dontirun/state-machine-semaphore.Semaphore.property.id"></a>
+
+```typescript
+public readonly id: string;
+```
+
+- *Type:* string
+
+Descriptive identifier for this chainable.
+
+---
+
+##### `startState`<sup>Required</sup> <a name="startState" id="@dontirun/state-machine-semaphore.Semaphore.property.startState"></a>
+
+```typescript
+public readonly startState: State;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.State
+
+The start state of this state machine fragment.
+
+---
+
 
 ## Structs <a name="Structs" id="Structs"></a>
 
-### SemaphoreGeneratorProps <a name="SemaphoreGeneratorProps" id="@dontirun/state-machine-semaphore.SemaphoreGeneratorProps"></a>
+### SemaphoreProps <a name="SemaphoreProps" id="@dontirun/state-machine-semaphore.SemaphoreProps"></a>
 
-Interface for creating a SemaphoreGenerator.
+Interface for creating a Semaphore.
 
-#### Initializer <a name="Initializer" id="@dontirun/state-machine-semaphore.SemaphoreGeneratorProps.Initializer"></a>
+#### Initializer <a name="Initializer" id="@dontirun/state-machine-semaphore.SemaphoreProps.Initializer"></a>
 
 ```typescript
-import { SemaphoreGeneratorProps } from '@dontirun/state-machine-semaphore'
+import { SemaphoreProps } from '@dontirun/state-machine-semaphore'
 
-const semaphoreGeneratorProps: SemaphoreGeneratorProps = { ... }
+const semaphoreProps: SemaphoreProps = { ... }
 ```
 
 #### Properties <a name="Properties" id="Properties"></a>
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreGeneratorProps.property.tableReadWriteCapacity">tableReadWriteCapacity</a></code> | <code><a href="#@dontirun/state-machine-semaphore.TableReadWriteCapacity">TableReadWriteCapacity</a></code> | Optionally set the DynamoDB table to have a specific read/write capacity with PROVISIONED billing. |
+| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreProps.property.job">job</a></code> | <code><a href="#@dontirun/state-machine-semaphore.IChainNextable">IChainNextable</a></code> | The job (or chained jobs) to be semaphored. |
+| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreProps.property.limit">limit</a></code> | <code>number</code> | The maximum number of concurrent executions for the given lock. |
+| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreProps.property.lockName">lockName</a></code> | <code>string</code> | The name of the semaphore. |
+| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreProps.property.nextState">nextState</a></code> | <code>aws-cdk-lib.aws_stepfunctions.State</code> | The State to go to after the semaphored job completes. |
+| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreProps.property.comments">comments</a></code> | <code>boolean</code> | Add detailed comments to lock related states. |
+| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreProps.property.reuseLock">reuseLock</a></code> | <code>boolean</code> | Explicility allow the reuse of a named lock from a previously generated job. |
+| <code><a href="#@dontirun/state-machine-semaphore.SemaphoreProps.property.tableReadWriteCapacity">tableReadWriteCapacity</a></code> | <code><a href="#@dontirun/state-machine-semaphore.TableReadWriteCapacity">TableReadWriteCapacity</a></code> | Optionally set the DynamoDB table to have a specific read/write capacity with PROVISIONED billing. |
 
 ---
 
-##### `tableReadWriteCapacity`<sup>Optional</sup> <a name="tableReadWriteCapacity" id="@dontirun/state-machine-semaphore.SemaphoreGeneratorProps.property.tableReadWriteCapacity"></a>
+##### `job`<sup>Required</sup> <a name="job" id="@dontirun/state-machine-semaphore.SemaphoreProps.property.job"></a>
+
+```typescript
+public readonly job: IChainNextable;
+```
+
+- *Type:* <a href="#@dontirun/state-machine-semaphore.IChainNextable">IChainNextable</a>
+
+The job (or chained jobs) to be semaphored.
+
+---
+
+##### `limit`<sup>Required</sup> <a name="limit" id="@dontirun/state-machine-semaphore.SemaphoreProps.property.limit"></a>
+
+```typescript
+public readonly limit: number;
+```
+
+- *Type:* number
+
+The maximum number of concurrent executions for the given lock.
+
+---
+
+##### `lockName`<sup>Required</sup> <a name="lockName" id="@dontirun/state-machine-semaphore.SemaphoreProps.property.lockName"></a>
+
+```typescript
+public readonly lockName: string;
+```
+
+- *Type:* string
+
+The name of the semaphore.
+
+---
+
+##### `nextState`<sup>Required</sup> <a name="nextState" id="@dontirun/state-machine-semaphore.SemaphoreProps.property.nextState"></a>
+
+```typescript
+public readonly nextState: State;
+```
+
+- *Type:* aws-cdk-lib.aws_stepfunctions.State
+
+The State to go to after the semaphored job completes.
+
+---
+
+##### `comments`<sup>Optional</sup> <a name="comments" id="@dontirun/state-machine-semaphore.SemaphoreProps.property.comments"></a>
+
+```typescript
+public readonly comments: boolean;
+```
+
+- *Type:* boolean
+
+Add detailed comments to lock related states.
+
+Significantly increases CloudFormation template size. Default: false.
+
+---
+
+##### `reuseLock`<sup>Optional</sup> <a name="reuseLock" id="@dontirun/state-machine-semaphore.SemaphoreProps.property.reuseLock"></a>
+
+```typescript
+public readonly reuseLock: boolean;
+```
+
+- *Type:* boolean
+
+Explicility allow the reuse of a named lock from a previously generated job.
+
+Throws an error if a different `limit` is specified. Default: false.
+
+---
+
+##### `tableReadWriteCapacity`<sup>Optional</sup> <a name="tableReadWriteCapacity" id="@dontirun/state-machine-semaphore.SemaphoreProps.property.tableReadWriteCapacity"></a>
 
 ```typescript
 public readonly tableReadWriteCapacity: TableReadWriteCapacity;
@@ -198,6 +316,8 @@ public readonly tableReadWriteCapacity: TableReadWriteCapacity;
 - *Default:* PAY_PER_REQUEST
 
 Optionally set the DynamoDB table to have a specific read/write capacity with PROVISIONED billing.
+
+Note: This property can only be set on the first instantiation of a `Semaphore` per stack
 
 ---
 

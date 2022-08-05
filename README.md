@@ -14,13 +14,9 @@ This construct is based off of [Justin Callison's](https://github.com/JustinCall
 
 ### Example 1) A state machine with a controlled job
 
-<table>
-<tr>
-<th>Code</th>
-<th>Definition</th>
-</tr>
-<tr>
-<td>
+<details>
+
+<summary>Click to see code</summary>
 
 ```typescript
 import { Function } from 'aws-cdk-lib/aws-lambda'; 
@@ -28,7 +24,7 @@ import { Duration, Stack, StackProps } from 'aws-cdk-lib';
 import { StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
-import { SemaphoreGenerator } from '@dontirun/state-machine-semaphore';
+import { Semaphore } from '@dontirun/state-machine-semaphore';
 
 
 export class CdkTestStack extends Stack {
@@ -43,9 +39,8 @@ export class CdkTestStack extends Stack {
 
     const afterContestedJob = new Succeed(this, 'Succeed');
 
-    const generator = new SemaphoreGenerator(this, 'SemaphoreGenerator');
-    const stateMachineFragment = generator.generateSemaphoredJob('life', 42, contestedJob, afterContestedJob);
-
+    const stateMachineFragment = new Semaphore(stack, 'Semaphore', { lockName: 'life', limit: 42, job: contestedJob, nextState: afterContestedJob });
+    
     new StateMachine(this, 'StateMachine', {
       definition: stateMachineFragment,
     });
@@ -53,23 +48,22 @@ export class CdkTestStack extends Stack {
 }
 ```
 
-</td>
-<td>
+</details>
+
+
+<details>
+
+<summary>Click to see the state machine definition</summary>
 
 ![Example 1 Definition](./images/Example1_Graph_Edit.png)
-</td>
-</tr>
-</table>
+</details>
+
 
 ### Example 2) A state machine with multiple semaphores
 
-<table>
-<tr>
-<th>Code</th>
-<th>Definition</th>
-</tr>
-<tr>
-<td>
+<details>
+
+<summary>Click to see code</summary>
 
 ```typescript
 import { Function } from 'aws-cdk-lib/aws-lambda'; 
@@ -77,7 +71,7 @@ import { Duration, Stack, StackProps } from 'aws-cdk-lib';
 import { StateMachine, Succeed, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Construct } from 'constructs';
-import { SemaphoreGenerator } from '@dontirun/state-machine-semaphore';
+import { Semaphore } from '@dontirun/state-machine-semaphore';
 
 
 export class CdkTestStack extends Stack {
@@ -95,24 +89,24 @@ export class CdkTestStack extends Stack {
     })
     const afterContestedJob2 = new Succeed(this, 'Succeed');
 
-    const generator = new SemaphoreGenerator(this, 'SemaphoreGenerator');
-    const stateMachineFragment = generator.generateSemaphoredJob('life', 42, contestedJob, notContestedJob);
-    const stateMachineFragment2 = generator.generateSemaphoredJob('liberty', 7, contestedJob2, afterContestedJob2);
+    const definition = new Semaphore(stack, 'Semaphore', { lockName: 'life', limit: 42, job: contestedJob, nextState: notContestedJob })
+      .next(new Semaphore(stack, 'Semaphore2', { lockName: 'liberty', limit: 7, job: contestedJob2, nextState: afterContestedJob2 }));
 
     new StateMachine(this, 'StateMachine', {
-      definition: stateMachineFragment.next(stateMachineFragment2),
+      definition: definition,
     });
   }
 }
 ```
 
-</td>
-<td>
+</details>
+
+<details>
+
+<summary>Click to see the state machine definition</summary>
 
 ![Example 2 Definition](./images/Example2_Graph_Edit.png)
-</td>
-</tr>
-</table>
+</details>
 
 ## API Reference
 
