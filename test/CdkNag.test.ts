@@ -2,7 +2,7 @@ import { App, Aspects, Duration, Stack } from 'aws-cdk-lib';
 import { Annotations, Match } from 'aws-cdk-lib/assertions';
 import { StateMachine, Wait, WaitTime } from 'aws-cdk-lib/aws-stepfunctions';
 import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
-import { SemaphoreGenerator } from '../src';
+import { Semaphore } from '../src';
 
 describe('cdk-nag AwsSolutions Pack', () => {
   let stack: Stack;
@@ -11,15 +11,14 @@ describe('cdk-nag AwsSolutions Pack', () => {
     // GIVEN
     app = new App();
     stack = new Stack(app, 'test');
-    const generator = new SemaphoreGenerator(stack, 'SemaphoreGenerator');
     const wait = new Wait(stack, 'Wait', { time: WaitTime.duration(Duration.seconds(7)) });
     const wait2 = new Wait(stack, 'Wait2', { time: WaitTime.duration(Duration.seconds(7)) });
     const machine = new StateMachine(stack, 'machine', {
-      definition: generator.generateSemaphoredJob('life', 42, wait, wait2),
+      definition: new Semaphore(stack, 'Semaphore', { lockName: 'life', limit: 42, job: wait, nextState: wait2 }),
     });
     // WHEN
     Aspects.of(stack).add(new AwsSolutionsChecks());
-    NagSuppressions.addResourceSuppressionsByPath(stack, '/test/SemaphoreGenerator/StateMachineSempahoreTable/Resource',
+    NagSuppressions.addResourceSuppressionsByPath(stack, '/test/StateMachineSempahoreTable920751a65a584e8ab7583460f6db686a/Resource',
       [{ id: 'AwsSolutions-DDB3', reason: 'Point-in-time recovery does not make sense for sempahores' }],
     );
     NagSuppressions.addResourceSuppressions(machine,
