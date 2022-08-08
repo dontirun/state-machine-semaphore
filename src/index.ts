@@ -228,6 +228,9 @@ export class Semaphore extends StateMachineFragment {
   private ensureTable(props: SemaphoreProps): Table {
     const existing = Stack.of(this).node.tryFindChild(this.tableName);
     if (existing) {
+      if (props.tableReadWriteCapacity) {
+        throw new Error('`tableReadWriteCapacity` can only be specified on the first instance of the `Semaphore` construct in each stack.');
+      }
       // Just assume this is true
       return existing as Table;
     } else {
