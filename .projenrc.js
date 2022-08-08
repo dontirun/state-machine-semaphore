@@ -25,6 +25,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
     packageId: 'Dontirun.StateMachineSemaphore',
     dotNetNamespace: 'Dontirun.StateMachineSemaphore',
   },
+  publishToMaven: {
+    mavenGroupId: 'io.github.dontirun',
+    javaPackage: 'io.github.dontirun.statemachinesemaphore',
+    mavenArtifactId: 'statemachinesemaphore',
+    mavenEndpoint: 'https://s01.oss.sonatype.org',
+  },
   autoApproveOptions: {
     allowedUsernames: ['dontirun'],
     secret: 'GITHUB_TOKEN',

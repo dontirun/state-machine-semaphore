@@ -43,3 +43,16 @@ test('Only 1 DynamoDB Table', () => {
 
   Template.fromStack(stack).resourceCountIs('AWS::DynamoDB::Table', 1);
 });
+
+test('Error on  use of `tableReadWriteCapacity` beyond first instance', () => {
+  const wait = new Wait(stack, 'Wait', { time: WaitTime.duration(Duration.seconds(7)) });
+  const wait2 = new Wait(stack, 'Wait2', { time: WaitTime.duration(Duration.seconds(7)) });
+  const wait3 = new Wait(stack, 'Wait3', { time: WaitTime.duration(Duration.seconds(7)) });
+  new Semaphore(stack, 'Semaphore1', { lockName: 'life', limit: 42, job: wait, nextState: wait2 });
+  expect(() => {
+    new Semaphore(stack, 'Semaphore2', {
+      tableReadWriteCapacity: { writeCapacity: 42, readCapacity: 42 }, lockName: 'liberty', limit: 7, job: wait3, nextState: new Succeed(stack, 'Succeed'),
+    });
+  }).toThrowError('`tableReadWriteCapacity` can only be specified on the first instance of the `Semaphore` construct in each stack.');
+});
+
