@@ -4,7 +4,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/state-machine-semaphore.svg)](https://pypi.org/project/state-machine-semaphore)
 [![NuGet version](https://img.shields.io/nuget/v/Dontirun.StateMachineSemaphore)](https://www.nuget.org/packages/Dontirun.StateMachineSemaphore)
 [![Maven version](https://img.shields.io/maven-central/v/io.github.dontirun/statemachinesemaphore)](https://search.maven.org/artifact/io.github.dontirun/statemachinesemaphore)
-[![Go version](https://pkg.go.dev/badge/github.com/dontirun/state-machine-semaphore-go.svg)](https://pkg.go.dev/github.com/dontirun/state-machine-semaphore-go)
+[![Go version](https://img.shields.io/github/go-mod/go-version/dontirun/state-machine-semaphore-go?color=orange&filename=dontirunstatemachinesemaphore%2Fgo.mod)](https://github.com/dontirun/state-machine-semaphore-go)
 
 [![View on Construct Hub](https://constructs.dev/badge?package=%40dontirun%2Fstate-machine-semaphore)](https://constructs.dev/packages/@dontirun/state-machine-semaphore)
 
