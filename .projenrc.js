@@ -31,8 +31,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
     mavenArtifactId: 'statemachinesemaphore',
     mavenEndpoint: 'https://s01.oss.sonatype.org',
   },
+  publishToGo: {
+    moduleName: 'github.com/dontirun/state-machine-semaphore-go',
+    githubUseSsh: true,
+  },
   autoApproveOptions: {
-    allowedUsernames: ['dontirun'],
+    allowedUsernames: ['github-bot', 'dontirun'],
     secret: 'GITHUB_TOKEN',
   },
   autoApproveUpgrades: true,
