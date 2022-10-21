@@ -1,4 +1,4 @@
-import { Duration, Names, Stack } from 'aws-cdk-lib';
+import { Duration, Names, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Table, BillingMode, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
 import { Parallel, StateMachineFragment, JsonPath, Choice, Pass, Wait, WaitTime, Condition, State, IChainable, INextable } from 'aws-cdk-lib/aws-stepfunctions';
 import { DynamoAttributeValue, DynamoGetItem, DynamoProjectionExpression, DynamoPutItem, DynamoReturnValues, DynamoUpdateItem } from 'aws-cdk-lib/aws-stepfunctions-tasks';
@@ -39,6 +39,7 @@ export interface SemaphoreProps {
    * @default PAY_PER_REQUEST
    */
   readonly tableReadWriteCapacity?: TableReadWriteCapacity;
+  readonly tableRemovalPolicy?: RemovalPolicy;
 }
 
 /**
@@ -242,6 +243,7 @@ export class Semaphore extends StateMachineFragment {
         readCapacity: props.tableReadWriteCapacity?.readCapacity,
         writeCapacity: props.tableReadWriteCapacity?.writeCapacity,
         billingMode: props.tableReadWriteCapacity ? BillingMode.PROVISIONED : BillingMode.PAY_PER_REQUEST,
+        removalPolicy: props.tableRemovalPolicy,
       });
     }
   }
