@@ -39,7 +39,6 @@ export interface SemaphoreProps {
    * @default PAY_PER_REQUEST
    */
   readonly tableReadWriteCapacity?: TableReadWriteCapacity;
-  readonly tableRemovalPolicy?: RemovalPolicy;
 }
 
 /**
@@ -243,7 +242,7 @@ export class Semaphore extends StateMachineFragment {
         readCapacity: props.tableReadWriteCapacity?.readCapacity,
         writeCapacity: props.tableReadWriteCapacity?.writeCapacity,
         billingMode: props.tableReadWriteCapacity ? BillingMode.PROVISIONED : BillingMode.PAY_PER_REQUEST,
-        removalPolicy: props.tableRemovalPolicy ?? RemovalPolicy.DESTROY,
+        removalPolicy: RemovalPolicy.DESTROY,
       });
     }
   }
