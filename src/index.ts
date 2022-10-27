@@ -243,7 +243,7 @@ export class Semaphore extends StateMachineFragment {
         readCapacity: props.tableReadWriteCapacity?.readCapacity,
         writeCapacity: props.tableReadWriteCapacity?.writeCapacity,
         billingMode: props.tableReadWriteCapacity ? BillingMode.PROVISIONED : BillingMode.PAY_PER_REQUEST,
-        removalPolicy: props.tableRemovalPolicy,
+        removalPolicy: props.tableRemovalPolicy ?? RemovalPolicy.DESTROY,
       });
     }
   }
