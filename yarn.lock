@@ -1637,9 +1637,9 @@ case@1.6.3, case@^1.6.3:
   integrity sha512-mzDSXIPaFwVDvZAHqZ9VlbyF4yyXRuX6IvB06WvPYkqJVO24kX1PPhv9bfpKNFZyxYFmmgo03HUiD8iklmJYRQ==
 
 cdk-nag@^2.15.32:
-  version "2.27.186"
-  resolved "https://registry.yarnpkg.com/cdk-nag/-/cdk-nag-2.27.186.tgz#94a9f0f47704f0c13361b150932a630118257da0"
-  integrity sha512-1VNyNv5oDdTw/s8nbF9gJb4jXHh+40xpHEB2tCUfMCGkic6f2k36dMAEg/Xq+Kl44jK8M+ffGOazi6CyB/OXxw==
+  version "2.27.187"
+  resolved "https://registry.yarnpkg.com/cdk-nag/-/cdk-nag-2.27.187.tgz#dced6bac96760f51da42cffb1e0e29f05d2a09c3"
+  integrity sha512-v+O4JX61KKlBxU57ozLf9Nn+SnsxoeIW1Slv4AsFUs9Sg7GC+eCRpUi3gdeYo1YOKPDtti9FAODunh3s/x1Q+g==
 
 chalk@^2.4.2:
   version "2.4.2"
@@ -3570,9 +3570,9 @@ isexe@^2.0.0:
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
 istanbul-lib-coverage@^3.0.0, istanbul-lib-coverage@^3.2.0:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/istanbul-lib-coverage/-/istanbul-lib-coverage-3.2.1.tgz#c680fd1544600460367af5811866c34c44c6f3b1"
-  integrity sha512-opCrKqbthmq3SKZ10mFMQG9dk3fTa3quaOLD35kJa5ejwZHd9xAr+kLuziiZz2cG32s4lMZxNdmdcEQnTDP4+g==
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/istanbul-lib-coverage/-/istanbul-lib-coverage-3.2.2.tgz#2d166c4b0644d43a39f04bf6c2edd1e585f31756"
+  integrity sha512-O8dpsF+r0WV/8MNRKfnmrtCWhuKjxrq2w+jpzBL5UZKTi2LeVWnWOmWRxFlesJONmc+wLAGvKQZEOanko0LFTg==
 
 istanbul-lib-instrument@^5.0.4, istanbul-lib-instrument@^5.1.0:
   version "5.2.1"
