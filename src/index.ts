@@ -39,6 +39,11 @@ export interface SemaphoreProps {
    * @default PAY_PER_REQUEST
    */
   readonly tableReadWriteCapacity?: TableReadWriteCapacity;
+  /**
+   * Optionally set the number of seconds to lock and wait before next step.
+   * @default 3
+   */
+  readonly waitTimeDuration?: number;
 }
 
 /**
@@ -168,9 +173,10 @@ export class Semaphore extends StateMachineFragment {
     const continueBecauseLockWasAlreadyAcquired = new Pass(this, `Continue Because ${props.lockName} Lock Was Already Acquired: ${lockInfo.timesUsed}`, {
       comment: props.comments ? 'In this state, we have confimed that lock is already held, so we pass the original execution input into the the function that does the work.' : undefined,
     });
+    const waitTimeDuration = props.waitTimeDuration ? props.waitTimeDuration : 3;
     const waitToGetLock = new Wait(this, `Wait to Get ${props.lockName} Lock: ${lockInfo.timesUsed}`, {
       comment: props.comments ? 'If the lock indeed not been succesfully Acquired, then wait for a bit before trying again.' : undefined,
-      time: WaitTime.duration(Duration.seconds(3)),
+      time: WaitTime.duration(Duration.seconds(waitTimeDuration)),
     });
     acquireLock.addRetry({ errors: ['DynamoDB.AmazonDynamoDBException'], maxAttempts: 0 })
       .addRetry({ maxAttempts: 6, backoffRate: 2 })
